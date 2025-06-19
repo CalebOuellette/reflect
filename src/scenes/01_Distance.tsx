@@ -39,17 +39,9 @@ export const Distance = () => {
       3,
     );
 
-    const light = {
-      start: objectPosition(),
-      direction: 0,
-      distance: 3,
-      color: "blue",
-    };
-
     return {
       ...startingPlayGroundState,
       objects: [observerObject],
-      lightRays: [light],
       lines: [
         {
           start: [objectPosition()[0], objectPosition()[1] + -0.75],
@@ -57,7 +49,12 @@ export const Distance = () => {
             reflectedObjects[0].point[0],
             reflectedObjects[0].point[1] - 0.75,
           ],
-          color: "green",
+          color: "#890233",
+        },
+        {
+          start: [objectPosition()[0], objectPosition()[1] - 1.5],
+          end: [15, objectPosition()[1] - 1.5],
+          color: "#89e283",
         },
         ...startingPlayGroundState.lines,
       ],
