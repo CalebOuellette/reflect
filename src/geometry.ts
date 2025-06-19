@@ -1,5 +1,10 @@
-import type { Point, Vector, Mirror } from './types';
-import { vectorSubtract, vectorScale, vectorNormalize, dotProduct } from './vectorUtils';
+import type { Point, Vector, Mirror } from "./types";
+import {
+  vectorSubtract,
+  vectorScale,
+  vectorNormalize,
+  dotProduct,
+} from "./vectorUtils";
 
 export function lineIntersection(
   p1: Point,
@@ -59,11 +64,12 @@ export function generateReflectedObjects(
   mirrors: Mirror[],
   maxDepth = 3,
 ): ReflectedObject[] {
-  debugger;
   const reflectedObjects: ReflectedObject[] = [];
-  const objectsToProcess: { point: Point; depth: number; reflectionAxes: Mirror[] }[] = [
-    { point: object, depth: 0, reflectionAxes: [] },
-  ];
+  const objectsToProcess: {
+    point: Point;
+    depth: number;
+    reflectionAxes: Mirror[];
+  }[] = [{ point: object, depth: 0, reflectionAxes: [] }];
   const processedObjects = new Set<string>();
 
   while (objectsToProcess.length > 0) {
@@ -78,11 +84,19 @@ export function generateReflectedObjects(
       if (!processedObjects.has(key)) {
         processedObjects.add(key);
         const newReflectionAxes = [...reflectionAxes, mirror];
-        reflectedObjects.push({ point: reflected, reflectionAxes: newReflectionAxes });
-        objectsToProcess.push({ point: reflected, depth: depth + 1, reflectionAxes: newReflectionAxes });
+        reflectedObjects.push({
+          point: reflected,
+          reflectionAxes: newReflectionAxes,
+        });
+        objectsToProcess.push({
+          point: reflected,
+          depth: depth + 1,
+          reflectionAxes: newReflectionAxes,
+        });
       }
     }
   }
 
   return reflectedObjects;
 }
+

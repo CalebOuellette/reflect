@@ -7,7 +7,7 @@ import {
 } from "./vectorUtils";
 import { lineIntersection, reflectVector } from "./geometry";
 
-const SCALE = 20;
+export const SCALE = 20;
 
 export function drawLine(
   ctx: CanvasRenderingContext2D,
