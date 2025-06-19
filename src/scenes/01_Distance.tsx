@@ -1,22 +1,73 @@
-import { ReflectionPlayGroundRender } from "../components/ReflectionPlayGroundRender";
+import { createSignal } from "solid-js";
+import { DraggablePlayground } from "../components/DraggablePlayground";
+import { type PlaygroundState } from "../components/ReflectionPlayGroundRender";
+import { generateReflectedObjects } from "../geometry";
+import type { Point } from "../types";
+
+const startingPlayGroundState: PlaygroundState = {
+  objects: [],
+  lightRays: [],
+  mirrors: [
+    {
+      start: [15, 5],
+      end: [15, 15],
+      color: "gray",
+    },
+  ],
+  lines: [
+    { start: [12, 5], end: [12, 15], color: "green" },
+    { start: [3, 5], end: [3, 15], color: "green" },
+  ],
+};
 
 export const Distance = () => {
+  // State as signals
+  const [objectPosition, setObjectPosition] = createSignal<Point>([5, 9]);
+
+  // Create reactive playground state
+  const playground: () => PlaygroundState = () => {
+    const observerObject = {
+      point: objectPosition(),
+      rotation: Math.PI / 4,
+      color: "blue",
+      canGrab: true,
+    };
+
+    const reflectedObjects = generateReflectedObjects(
+      observerObject,
+      startingPlayGroundState.mirrors,
+      3,
+    );
+
+    const light = {
+      start: objectPosition(),
+      direction: 0,
+      distance: 3,
+      color: "blue",
+    };
+
+    return {
+      ...startingPlayGroundState,
+      objects: [observerObject],
+      lightRays: [light],
+      lines: [
+        {
+          start: [objectPosition()[0], objectPosition()[1] + -0.75],
+          end: [
+            reflectedObjects[0].point[0],
+            reflectedObjects[0].point[1] - 0.75,
+          ],
+          color: "green",
+        },
+        ...startingPlayGroundState.lines,
+      ],
+    };
+  };
+
   return (
-    <ReflectionPlayGroundRender
-      playground={{
-        objects: [{ point: [5, 9], rotation: Math.PI / 4, color: "blue" }],
-        lightRays: [
-          { start: [5, 9], direction: 1, distance: 3, color: "blue" },
-        ],
-        mirrors: [
-          {
-            start: [10, 4.5],
-            end: [0, 4.5],
-            color: "gray",
-          },
-        ],
-        lines: [],
-      }}
+    <DraggablePlayground
+      playground={playground()}
+      onObjectDrag={setObjectPosition}
     />
   );
 };

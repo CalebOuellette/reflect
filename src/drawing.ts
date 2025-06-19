@@ -14,7 +14,7 @@ export function drawLine(
   from: Point,
   to: Point,
   color = "red",
-  width = 2
+  width = 2,
 ) {
   ctx.beginPath();
   ctx.moveTo(from[0] * SCALE, from[1] * SCALE);
@@ -28,7 +28,7 @@ export function drawCircle(
   ctx: CanvasRenderingContext2D,
   center: SceneObjects,
   radius = 5,
-  reflectionAxes: Line[] = []
+  reflectionAxes: Line[] = [],
 ) {
   const color = center.color;
   const opacity = center.opacity ?? 1;
@@ -80,14 +80,11 @@ export function drawCircle(
         0,
         scaledRadius,
         center.rotation + (i * Math.PI) / 2,
-        center.rotation + ((i + 1) * Math.PI) / 2
+        center.rotation + ((i + 1) * Math.PI) / 2,
       );
       ctx.lineTo(0, 0);
       ctx.fillStyle = colors[i];
       ctx.fill();
-      ctx.strokeStyle = `color-mix(in srgb, ${colors[i]} 80%, black 20%)`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
     }
   } else {
     ctx.beginPath();
@@ -96,13 +93,10 @@ export function drawCircle(
       center.point[1] * SCALE,
       radius * SCALE,
       0,
-      Math.PI * 2
+      Math.PI * 2,
     );
     ctx.fillStyle = color as string;
     ctx.fill();
-    ctx.strokeStyle = `color-mix(in srgb, ${color} 80%, black 20%)`;
-    ctx.lineWidth = 3;
-    ctx.stroke();
   }
 
   ctx.restore();
@@ -116,7 +110,7 @@ export function drawLineWithReflection(
   maxReflections = 10,
   maxDistance = 50,
   color = "blue",
-  width = 1
+  width = 1,
 ) {
   let currentPoint = startPoint;
   const x = Math.cos(angle);
@@ -140,13 +134,13 @@ export function drawLineWithReflection(
         currentPoint,
         rayEnd,
         mirror.start,
-        mirror.end
+        mirror.end,
       );
 
       if (intersection) {
         const distance = Math.sqrt(
           Math.pow(intersection[0] - currentPoint[0], 2) +
-            Math.pow(intersection[1] - currentPoint[1], 2)
+            Math.pow(intersection[1] - currentPoint[1], 2),
         );
 
         if (distance > 0.001 && distance < closestDistance) {
@@ -162,7 +156,7 @@ export function drawLineWithReflection(
 
       const mirrorVector = vectorSubtract(
         closestMirror.start,
-        closestMirror.end
+        closestMirror.end,
       );
       const mirrorNormal: Vector = [-mirrorVector[1], mirrorVector[0]];
 

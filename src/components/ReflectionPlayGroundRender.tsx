@@ -57,6 +57,10 @@ export function ReflectionPlayGroundRender(props: {
         1,
       );
     });
+
+    props.playground.lines.forEach((line) => {
+      drawLine(ctx, line.start, line.end, line.color);
+    });
   };
 
   onMount(() => {
@@ -65,7 +69,7 @@ export function ReflectionPlayGroundRender(props: {
     const ctx = canvas.getContext("2d")!;
 
     // Set display size (css pixels).
-    var size = 500;
+    var size = 600;
     canvas.style.width = size + "px";
     canvas.style.height = size + "px";
 
@@ -77,7 +81,6 @@ export function ReflectionPlayGroundRender(props: {
     // Normalize coordinate system to use css pixels.
     ctx.scale(scale, scale);
 
-    // Add event listeners
     // Initial draw
     draw();
   });
@@ -96,8 +99,8 @@ export function ReflectionPlayGroundRender(props: {
         ref={canvas}
         class="border-neutral-300 border shadow rounded-xl"
         id="scene"
-        width="500"
-        height="500"
+        width="600"
+        height="600"
       ></canvas>
     </div>
   );

@@ -6,6 +6,7 @@ export type SceneObjects = {
   point: Point;
   rotation: number;
   opacity?: number;
+  canGrab?: boolean;
 };
 
 export type LightRay = {
