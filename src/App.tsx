@@ -60,20 +60,62 @@ function reflectVector(incident: Vector, normal: Vector): Vector {
   return vectorSubtract(incident, vectorScale(normalizedNormal, 2 * dot));
 }
 
+function reflectPointAcrossMirror(point: Point, mirror: Mirror): Point {
+  const [p1, p2] = mirror;
+  const mirrorVector = vectorSubtract(p2, p1);
+  const mirrorNormal = vectorNormalize([-mirrorVector[1], mirrorVector[0]]);
+
+  const pointToMirror = vectorSubtract(point, p1);
+  const distanceToMirror = dotProduct(pointToMirror, mirrorNormal);
+
+  const reflectedPoint = vectorSubtract(
+    point,
+    vectorScale(mirrorNormal, 2 * distanceToMirror),
+  );
+  return reflectedPoint;
+}
+
+function generateReflectedObjects(
+  object: Point,
+  mirrors: Mirror[],
+  maxDepth = 3,
+): Point[] {
+  debugger;
+  const reflectedObjects: Point[] = [];
+  const objectsToProcess: { point: Point; depth: number }[] = [
+    { point: object, depth: 0 },
+  ];
+  const processedObjects = new Set<string>();
+
+  while (objectsToProcess.length > 0) {
+    const { point, depth } = objectsToProcess.shift()!;
+
+    if (depth >= maxDepth) continue;
+
+    for (const mirror of mirrors) {
+      const reflected = reflectPointAcrossMirror(point, mirror);
+      const key = `${reflected[0].toFixed(3)},${reflected[1].toFixed(3)}`;
+
+      if (!processedObjects.has(key)) {
+        processedObjects.add(key);
+        reflectedObjects.push(reflected);
+        objectsToProcess.push({ point: reflected, depth: depth + 1 });
+      }
+    }
+  }
+
+  return reflectedObjects;
+}
+
 function App() {
   let canvas: HTMLCanvasElement | undefined;
-
   const observer: Point = [5, 5];
   const object: Point = [5, 9];
 
   const mirrors: Mirror[] = [
     [
-      [8, 0],
-      [8, 10],
-    ],
-    [
-      [0, 0],
-      [0, 10],
+      [10, 4.5],
+      [0, 4.5],
     ],
   ];
 
@@ -102,7 +144,14 @@ function App() {
       drawLine(ctx, mirror[0], mirror[1], "gray");
     });
 
-    drawLineWithReflection(ctx, observer, [1, 0.1], mirrors);
+    const reflectedObjects = generateReflectedObjects(object, mirrors, 3);
+    reflectedObjects.forEach((reflectedObj) => {
+      drawCircle(ctx, reflectedObj, 0.5, `rgba(255, 0, 0, ${0.8})`);
+    });
+
+    const vector: Vector = [1, 0.1];
+    drawLineWithReflection(ctx, observer, vector, mirrors, 10, 50, "blue", 1);
+    drawLine(ctx, observer, vectorAdd(observer, vectorScale(vector, 10)));
   });
 
   return (
