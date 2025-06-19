@@ -1,7 +1,7 @@
 import { onMount } from "solid-js";
 import type { Point, Vector, Mirror } from './types';
 import { vectorAdd, vectorScale } from './vectorUtils';
-import { generateReflectedObjects } from './geometry';
+import { generateReflectedObjects, type ReflectedObject } from './geometry';
 import { drawLine, drawCircle, drawLineWithReflection } from './drawing';
 
 function App() {
@@ -43,12 +43,12 @@ function App() {
 
     const reflectedObjects = generateReflectedObjects(object, mirrors, 3);
     reflectedObjects.forEach((reflectedObj) => {
-      drawCircle(ctx, reflectedObj, 0.5, [
+      drawCircle(ctx, reflectedObj.point, 0.5, [
         `rgba(255, 0, 0, ${0.8})`,
         `rgba(0, 0, 255, ${0.8})`,
         `rgba(0, 255, 0, ${0.8})`,
         `rgba(255, 255, 0, ${0.8})`
-      ]);
+      ], reflectedObj.reflectionAxes);
     });
 
     const vector: Vector = [1, 0.1];

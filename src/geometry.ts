@@ -49,20 +49,25 @@ export function reflectPointAcrossMirror(point: Point, mirror: Mirror): Point {
   return reflectedPoint;
 }
 
+export interface ReflectedObject {
+  point: Point;
+  reflectionAxes: Mirror[];
+}
+
 export function generateReflectedObjects(
   object: Point,
   mirrors: Mirror[],
   maxDepth = 3,
-): Point[] {
+): ReflectedObject[] {
   debugger;
-  const reflectedObjects: Point[] = [];
-  const objectsToProcess: { point: Point; depth: number }[] = [
-    { point: object, depth: 0 },
+  const reflectedObjects: ReflectedObject[] = [];
+  const objectsToProcess: { point: Point; depth: number; reflectionAxes: Mirror[] }[] = [
+    { point: object, depth: 0, reflectionAxes: [] },
   ];
   const processedObjects = new Set<string>();
 
   while (objectsToProcess.length > 0) {
-    const { point, depth } = objectsToProcess.shift()!;
+    const { point, depth, reflectionAxes } = objectsToProcess.shift()!;
 
     if (depth >= maxDepth) continue;
 
@@ -72,8 +77,9 @@ export function generateReflectedObjects(
 
       if (!processedObjects.has(key)) {
         processedObjects.add(key);
-        reflectedObjects.push(reflected);
-        objectsToProcess.push({ point: reflected, depth: depth + 1 });
+        const newReflectionAxes = [...reflectionAxes, mirror];
+        reflectedObjects.push({ point: reflected, reflectionAxes: newReflectionAxes });
+        objectsToProcess.push({ point: reflected, depth: depth + 1, reflectionAxes: newReflectionAxes });
       }
     }
   }

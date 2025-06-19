@@ -28,29 +28,56 @@ export function drawCircle(
   ctx: CanvasRenderingContext2D,
   center: Point,
   radius = 5,
-  color: string | string[] = "black"
+  color: string | string[] = "black",
+  reflectionAxes: Mirror[] = []
 ) {
   if (Array.isArray(color) && color.length === 4) {
-    // Draw 4 pie slices with different colors
+    // Draw 4 pie slices with different colors, applying reflections to the orientation
     const colors = color as string[];
     const centerX = center[0] * SCALE;
     const centerY = center[1] * SCALE;
     const scaledRadius = radius * SCALE;
 
+    // Calculate the rotation offset based on reflections
+    // todo refactor into cool helper method...
+    let rotationOffset = 0;
+    let flipX = 1;
+    let flipY = 1;
+
+    for (const mirror of reflectionAxes) {
+      const mirrorVector = vectorSubtract(mirror[1], mirror[0]);
+      const mirrorAngle = Math.atan2(mirrorVector[1], mirrorVector[0]);
+
+      // For each reflection, we need to flip the circle's orientation
+      // A reflection across a horizontal line flips Y, across vertical flips X
+      if (Math.abs(Math.sin(mirrorAngle)) < 0.1) {
+        // Horizontal mirror
+        flipY *= -1;
+      } else if (Math.abs(Math.cos(mirrorAngle)) < 0.1) {
+        // Vertical mirror
+        flipX *= -1;
+      } else {
+        // Diagonal mirror - more complex reflection
+        rotationOffset += 2 * mirrorAngle;
+      }
+    }
+
+    // Apply the transformations
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.scale(flipX, flipY);
+    ctx.rotate(rotationOffset);
+
     for (let i = 0; i < 4; i++) {
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.arc(
-        centerX,
-        centerY,
-        scaledRadius,
-        (i * Math.PI) / 2,
-        ((i + 1) * Math.PI) / 2
-      );
-      ctx.lineTo(centerX, centerY);
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, scaledRadius, (i * Math.PI) / 2, ((i + 1) * Math.PI) / 2);
+      ctx.lineTo(0, 0);
       ctx.fillStyle = colors[i];
       ctx.fill();
     }
+
+    ctx.restore();
   } else {
     ctx.beginPath();
     ctx.arc(
