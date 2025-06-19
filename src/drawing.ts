@@ -1,4 +1,4 @@
-import type { Point, Vector, Mirror, PointWithRotation } from "./types";
+import type { Point, Vector, Mirror, SceneObjects } from "./types";
 import {
   vectorAdd,
   vectorScale,
@@ -26,11 +26,11 @@ export function drawLine(
 
 export function drawCircle(
   ctx: CanvasRenderingContext2D,
-  center: PointWithRotation,
+  center: SceneObjects,
   radius = 5,
-  color: string | string[] = "black",
   reflectionAxes: Mirror[] = [],
 ) {
+  const color = center.color;
   if (Array.isArray(color) && color.length === 4) {
     // Draw 4 pie slices with different colors, applying reflections to the orientation
     const colors = color as string[];
@@ -101,7 +101,7 @@ export function drawCircle(
 export function drawLineWithReflection(
   ctx: CanvasRenderingContext2D,
   startPoint: Point,
-  direction: Vector,
+  angle: number,
   mirrors: Mirror[],
   maxReflections = 10,
   maxDistance = 50,
@@ -109,6 +109,10 @@ export function drawLineWithReflection(
   width = 1,
 ) {
   let currentPoint = startPoint;
+  const x = Math.cos(angle);
+  const y = Math.sin(angle);
+
+  const direction: [number, number] = [x, y];
   let currentDirection = vectorNormalize(direction);
 
   for (let reflection = 0; reflection < maxReflections; reflection++) {
