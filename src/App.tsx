@@ -1,6 +1,6 @@
 import { onMount } from "solid-js";
 
-const SCALE = 10;
+const SCALE = 20;
 type Point = [number, number];
 type Vector = [number, number];
 type Mirror = [Point, Point];
@@ -61,7 +61,7 @@ function reflectVector(incident: Vector, normal: Vector): Vector {
 }
 
 function App() {
-  let myCanvas: HTMLCanvasElement | undefined;
+  let canvas: HTMLCanvasElement | undefined;
 
   const observer: Point = [5, 5];
   const object: Point = [5, 9];
@@ -78,10 +78,23 @@ function App() {
   ];
 
   onMount(() => {
-    if (!myCanvas) {
+    if (!canvas) {
       return;
     }
-    const ctx = myCanvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d")!;
+
+    // Set display size (css pixels).
+    var size = 500;
+    canvas.style.width = size + "px";
+    canvas.style.height = size + "px";
+
+    // Set actual size in memory (scaled to account for extra pixel density).
+    var scale = window.devicePixelRatio; // Change to 1 on retina screens to see blurry canvas.
+    canvas.width = size * scale;
+    canvas.height = size * scale;
+
+    // Normalize coordinate system to use css pixels.
+    ctx.scale(scale, scale);
     drawCircle(ctx, observer, 0.5);
     drawCircle(ctx, object, 0.5, "red");
 
@@ -94,7 +107,7 @@ function App() {
 
   return (
     <div>
-      <canvas ref={myCanvas} id="scene" width="800" height="600"></canvas>
+      <canvas ref={canvas} id="scene" width="500" height="500"></canvas>
     </div>
   );
 }
