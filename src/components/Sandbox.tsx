@@ -1,4 +1,7 @@
+import { SCALE } from "../drawing";
+
 export const SandBox = () => {
+  const wrapperRef;
   // Signals for reactive state
   // Drag state
   const [isDragging, setIsDragging] = createSignal(false);
@@ -42,10 +45,10 @@ export const SandBox = () => {
     setIsDragging(false);
   };
 
-  canvas.addEventListener("mousedown", handleMouseDown);
-  canvas.addEventListener("mousemove", handleMouseMove);
-  canvas.addEventListener("mouseup", handleMouseUp);
-  canvas.addEventListener("mouseleave", handleMouseUp); // Stop dragging if mouse leaves canvas
+  wrapperRef.addEventListener("mousedown", handleMouseDown);
+  wrapperRef.addEventListener("mousemove", handleMouseMove);
+  wrapperRef.addEventListener("mouseup", handleMouseUp);
+  wrapperRef.addEventListener("mouseleave", handleMouseUp); // Stop dragging if mouse leaves canvas
 
-  return <div></div>;
+  return <div ref={wrapperRef}></div>;
 };

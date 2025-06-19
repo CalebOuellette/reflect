@@ -1,19 +1,13 @@
 import { onMount, createEffect } from "solid-js";
-import type { Point, Mirror, SceneObjects } from "../types";
+import type { LightRay, Line, SceneObjects } from "../types";
 import { generateReflectedObjects } from "../geometry";
 import { drawLine, drawCircle, drawLineWithReflection } from "../drawing";
 
-// can move ... can rotate ...
-
 export type PlaygroundState = {
   objects: SceneObjects[];
-  lightRays: {
-    start: Point;
-    direction: number;
-    distance: number;
-    color: string;
-  }[];
-  mirrors: Mirror[];
+  lightRays: LightRay[];
+  mirrors: Line[];
+  lines: Line[];
 };
 
 export function ReflectionPlayGroundRender(props: {
@@ -30,7 +24,7 @@ export function ReflectionPlayGroundRender(props: {
 
     // Draw mirrors
     props.playground.mirrors.forEach((mirror) => {
-      drawLine(ctx, mirror[0], mirror[1], "gray");
+      drawLine(ctx, mirror.start, mirror.end, mirror.color);
     });
 
     props.playground.objects.forEach((o) => {
@@ -43,7 +37,7 @@ export function ReflectionPlayGroundRender(props: {
       reflectedObjects.forEach((reflectedObj) => {
         drawCircle(
           ctx,
-          { ...o, point: reflectedObj.point },
+          { ...o, opacity: 0.75, point: reflectedObj.point },
           0.5,
           reflectedObj.reflectionAxes,
         );
@@ -100,7 +94,7 @@ export function ReflectionPlayGroundRender(props: {
     <div>
       <canvas
         ref={canvas}
-        class="border-neutral-800 border"
+        class="border-neutral-300 border shadow rounded-xl"
         id="scene"
         width="500"
         height="500"

@@ -1,4 +1,4 @@
-import type { Point, Vector, Mirror, SceneObjects } from "./types";
+import type { Point, Vector, Line, SceneObjects } from "./types";
 import {
   vectorSubtract,
   vectorScale,
@@ -39,12 +39,12 @@ export function reflectVector(incident: Vector, normal: Vector): Vector {
   return vectorSubtract(incident, vectorScale(normalizedNormal, 2 * dot));
 }
 
-export function reflectPointAcrossMirror(point: Point, mirror: Mirror): Point {
-  const [p1, p2] = mirror;
-  const mirrorVector = vectorSubtract(p2, p1);
+export function reflectPointAcrossMirror(point: Point, mirror: Line): Point {
+  const { start, end } = mirror;
+  const mirrorVector = vectorSubtract(end, start);
   const mirrorNormal = vectorNormalize([-mirrorVector[1], mirrorVector[0]]);
 
-  const pointToMirror = vectorSubtract(point, p1);
+  const pointToMirror = vectorSubtract(point, start);
   const distanceToMirror = dotProduct(pointToMirror, mirrorNormal);
 
   const reflectedPoint = vectorSubtract(
@@ -56,19 +56,19 @@ export function reflectPointAcrossMirror(point: Point, mirror: Mirror): Point {
 
 export interface ReflectedObject {
   point: Point;
-  reflectionAxes: Mirror[];
+  reflectionAxes: Line[];
 }
 
 export function generateReflectedObjects(
   object: SceneObjects,
-  mirrors: Mirror[],
+  mirrors: Line[],
   maxDepth = 3,
 ): ReflectedObject[] {
   const reflectedObjects: ReflectedObject[] = [];
   const objectsToProcess: {
     point: Point;
     depth: number;
-    reflectionAxes: Mirror[];
+    reflectionAxes: Line[];
   }[] = [{ point: object.point, depth: 0, reflectionAxes: [] }];
 
   const baseObject = `${object.point[0].toFixed(3)},${object.point[1].toFixed(3)}`;

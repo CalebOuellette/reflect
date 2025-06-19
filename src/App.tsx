@@ -10,7 +10,7 @@ function App() {
       {scenes.map((scene) => {
         const SceneComponent = scene.component;
         return (
-          <div>
+          <div class="w-screen flex-col h-screen flex justify-center items-center">
             <h2>{scene.name}</h2>
             <SceneComponent />
           </div>
