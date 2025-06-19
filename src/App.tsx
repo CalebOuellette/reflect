@@ -1,8 +1,8 @@
 import { onMount } from "solid-js";
-import type { Point, Vector, Mirror } from './types';
-import { vectorAdd, vectorScale } from './vectorUtils';
-import { generateReflectedObjects, type ReflectedObject } from './geometry';
-import { drawLine, drawCircle, drawLineWithReflection } from './drawing';
+import type { Point, Vector, Mirror } from "./types";
+import { vectorAdd, vectorScale } from "./vectorUtils";
+import { generateReflectedObjects, type ReflectedObject } from "./geometry";
+import { drawLine, drawCircle, drawLineWithReflection } from "./drawing";
 
 function App() {
   let canvas: HTMLCanvasElement | undefined;
@@ -35,7 +35,7 @@ function App() {
     // Normalize coordinate system to use css pixels.
     ctx.scale(scale, scale);
     drawCircle(ctx, observer, 0.5);
-    drawCircle(ctx, object, 0.5, ["red", "blue", "green", "yellow"]);
+    drawCircle(ctx, object, 0.5, ["red", "blue", "green", "yellow"], [], 0.8);
 
     mirrors.forEach((mirror) => {
       drawLine(ctx, mirror[0], mirror[1], "gray");
@@ -43,12 +43,19 @@ function App() {
 
     const reflectedObjects = generateReflectedObjects(object, mirrors, 3);
     reflectedObjects.forEach((reflectedObj) => {
-      drawCircle(ctx, reflectedObj.point, 0.5, [
-        `rgba(255, 0, 0, ${0.8})`,
-        `rgba(0, 0, 255, ${0.8})`,
-        `rgba(0, 255, 0, ${0.8})`,
-        `rgba(255, 255, 0, ${0.8})`
-      ], reflectedObj.reflectionAxes);
+      drawCircle(
+        ctx,
+        reflectedObj.point,
+        0.5,
+        [
+          `rgba(255, 0, 0, ${0.8})`,
+          `rgba(0, 0, 255, ${0.8})`,
+          `rgba(0, 255, 0, ${0.8})`,
+          `rgba(255, 255, 0, ${0.8})`,
+        ],
+        reflectedObj.reflectionAxes,
+        0.8,
+      );
     });
 
     const vector: Vector = [1, 0.1];
@@ -62,6 +69,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;

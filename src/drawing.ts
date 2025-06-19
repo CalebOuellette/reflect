@@ -14,7 +14,7 @@ export function drawLine(
   from: Point,
   to: Point,
   color = "red",
-  width = 2
+  width = 2,
 ) {
   ctx.beginPath();
   ctx.moveTo(from[0] * SCALE, from[1] * SCALE);
@@ -29,7 +29,8 @@ export function drawCircle(
   center: Point,
   radius = 5,
   color: string | string[] = "black",
-  reflectionAxes: Mirror[] = []
+  reflectionAxes: Mirror[] = [],
+  rotation: number = 0,
 ) {
   if (Array.isArray(color) && color.length === 4) {
     // Draw 4 pie slices with different colors, applying reflections to the orientation
@@ -71,7 +72,13 @@ export function drawCircle(
     for (let i = 0; i < 4; i++) {
       ctx.beginPath();
       ctx.moveTo(0, 0);
-      ctx.arc(0, 0, scaledRadius, (i * Math.PI) / 2, ((i + 1) * Math.PI) / 2);
+      ctx.arc(
+        0,
+        0,
+        scaledRadius,
+        rotation + (i * Math.PI) / 2,
+        rotation + ((i + 1) * Math.PI) / 2,
+      );
       ctx.lineTo(0, 0);
       ctx.fillStyle = colors[i];
       ctx.fill();
@@ -85,7 +92,7 @@ export function drawCircle(
       center[1] * SCALE,
       radius * SCALE,
       0,
-      Math.PI * 2
+      Math.PI * 2,
     );
     ctx.fillStyle = color as string;
     ctx.fill();
@@ -100,7 +107,7 @@ export function drawLineWithReflection(
   maxReflections = 10,
   maxDistance = 50,
   color = "blue",
-  width = 1
+  width = 1,
 ) {
   let currentPoint = startPoint;
   let currentDirection = vectorNormalize(direction);
@@ -120,13 +127,13 @@ export function drawLineWithReflection(
         currentPoint,
         rayEnd,
         mirror[0],
-        mirror[1]
+        mirror[1],
       );
 
       if (intersection) {
         const distance = Math.sqrt(
           Math.pow(intersection[0] - currentPoint[0], 2) +
-            Math.pow(intersection[1] - currentPoint[1], 2)
+            Math.pow(intersection[1] - currentPoint[1], 2),
         );
 
         if (distance > 0.001 && distance < closestDistance) {
