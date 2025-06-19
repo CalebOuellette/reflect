@@ -1,4 +1,4 @@
-import type { Point, Vector, Mirror } from "./types";
+import type { Point, Vector, Mirror, PointWithRotation } from "./types";
 import {
   vectorSubtract,
   vectorScale,
@@ -60,7 +60,7 @@ export interface ReflectedObject {
 }
 
 export function generateReflectedObjects(
-  object: Point,
+  object: PointWithRotation,
   mirrors: Mirror[],
   maxDepth = 3,
 ): ReflectedObject[] {
@@ -69,7 +69,7 @@ export function generateReflectedObjects(
     point: Point;
     depth: number;
     reflectionAxes: Mirror[];
-  }[] = [{ point: object, depth: 0, reflectionAxes: [] }];
+  }[] = [{ point: object.point, depth: 0, reflectionAxes: [] }];
   const processedObjects = new Set<string>();
 
   while (objectsToProcess.length > 0) {
@@ -99,4 +99,3 @@ export function generateReflectedObjects(
 
   return reflectedObjects;
 }
-
