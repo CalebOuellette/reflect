@@ -117,7 +117,7 @@ export const Angles = () => {
   };
 
   return (
-    <div class="flex gap-3 flex-col justify-center items-center h-screen">
+    <div class="flex gap-3 flex-col justify-center items-center">
       <DraggablePlayground
         playground={playground()}
         onObjectDrag={handleObjectDrag}

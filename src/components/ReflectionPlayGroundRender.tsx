@@ -99,8 +99,8 @@ export function ReflectionPlayGroundRender(props: {
         ref={canvas}
         class="border-neutral-300 border shadow rounded-xl"
         id="scene"
-        width="600"
-        height="600"
+        width="800"
+        height="800"
       ></canvas>
     </div>
   );

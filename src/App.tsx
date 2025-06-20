@@ -16,15 +16,10 @@ function App() {
     // Add more scenes here as needed
   ];
   return (
-    <div>
+    <div class="flex flex-col gap-4">
       {scenes.map((scene) => {
         const SceneComponent = scene.component;
-        return (
-          <div class="w-screen flex-col h-screen flex justify-center items-center">
-            <h2>{scene.name}</h2>
-            <SceneComponent />
-          </div>
-        );
+        return <SceneComponent />;
       })}
     </div>
   );
