@@ -1,4 +1,4 @@
-import { createMemo, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { DraggablePlayground } from "../components/DraggablePlayground";
 import { type PlaygroundState } from "../components/ReflectionPlayGroundRender";
 import { LessonDescription } from "../components/LessonDescription";
@@ -136,4 +136,3 @@ export const TwoMirrors = () => {
     </div>
   );
 };
-
