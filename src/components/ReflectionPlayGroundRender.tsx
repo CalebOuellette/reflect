@@ -69,12 +69,12 @@ export function ReflectionPlayGroundRender(props: {
     const ctx = canvas.getContext("2d")!;
 
     // Set display size (css pixels).
-    var size = 600;
+    const size = 800;
     canvas.style.width = size + "px";
     canvas.style.height = size + "px";
 
     // Set actual size in memory (scaled to account for extra pixel density).
-    var scale = window.devicePixelRatio;
+    const scale = window.devicePixelRatio;
     canvas.width = size * scale;
     canvas.height = size * scale;
 
