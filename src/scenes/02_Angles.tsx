@@ -4,6 +4,7 @@ import { type PlaygroundState } from "../components/ReflectionPlayGroundRender";
 import { LessonDescription } from "../components/LessonDescription";
 import { generateReflectedObjects } from "../geometry";
 import type { Point } from "../types";
+import { vectorSubtract, vectorAngle } from "../vectorUtils";
 
 const startingPlayGroundState: PlaygroundState = {
   objects: [
@@ -64,14 +65,44 @@ export const Angles = () => {
     };
 
     const reflectedObjects = generateReflectedObjects(
-      observerObject,
+      targetObject,
       startingPlayGroundState.mirrors,
       3,
     );
 
+    // Find the closest reflected object for demonstration
+    const closestReflected = reflectedObjects[0];
+    
+    let lines = [];
+    let lightRays = [];
+    
+    if (closestReflected) {
+      // Calculate vector from observer to reflected target
+      const directionToReflected = vectorSubtract(closestReflected.point, observerObject.point);
+      const angle = vectorAngle(directionToReflected);
+      
+      // Draw line from observer to reflected target object
+      lines.push({
+        start: observerObject.point,
+        end: closestReflected.point,
+        color: "green",
+        dotted: true,
+      });
+      
+      // Draw lightRay from observer at the same angle
+      lightRays.push({
+        start: observerObject.point,
+        direction: angle,
+        distance: 20,
+        color: "blue",
+      });
+    }
+
     return {
       ...startingPlayGroundState,
       objects: [observerObject, targetObject],
+      lines,
+      lightRays,
     };
   };
 
@@ -90,4 +121,3 @@ export const Angles = () => {
     </div>
   );
 };
-

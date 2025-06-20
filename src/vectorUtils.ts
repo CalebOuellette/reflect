@@ -21,3 +21,7 @@ export function vectorNormalize(v: Vector): Vector {
   if (length === 0) return [0, 0];
   return [v[0] / length, v[1] / length];
 }
+
+export function vectorAngle(v: Vector): number {
+  return Math.atan2(v[1], v[0]);
+}
