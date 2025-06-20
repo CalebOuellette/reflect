@@ -32,7 +32,7 @@ export function ReflectionPlayGroundRender(props: {
       const reflectedObjects = generateReflectedObjects(
         o,
         props.playground.mirrors,
-        3,
+        4,
       );
       reflectedObjects.forEach((reflectedObj) => {
         drawCircle(

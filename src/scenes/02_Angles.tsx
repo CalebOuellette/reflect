@@ -10,14 +10,14 @@ const startingPlayGroundState: PlaygroundState = {
   objects: [
     {
       id: "observer",
-      point: [10, 10],
+      point: [15, 17],
       rotation: Math.PI / 4,
       color: "blue",
       canGrab: true,
     },
     {
       id: "object",
-      point: [10, 15],
+      point: [15, 23],
       rotation: Math.PI / 4,
       color: "red",
       canGrab: true,
@@ -26,8 +26,8 @@ const startingPlayGroundState: PlaygroundState = {
   lightRays: [],
   mirrors: [
     {
-      start: [15, 0],
-      end: [15, 30],
+      start: [20, 0],
+      end: [20, 40],
       color: "#1f2937",
     },
   ],
@@ -36,8 +36,8 @@ const startingPlayGroundState: PlaygroundState = {
 
 export const Angles = () => {
   // State for both objects
-  const [observerPosition, setObserverPosition] = createSignal<Point>([10, 10]);
-  const [objectPosition, setObjectPosition] = createSignal<Point>([10, 15]);
+  const [observerPosition, setObserverPosition] = createSignal<Point>([15, 17]);
+  const [objectPosition, setObjectPosition] = createSignal<Point>([15, 23]);
 
   const handleObjectDrag = (newPosition: Point, id: string) => {
     if (id === "observer") {

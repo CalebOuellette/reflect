@@ -10,20 +10,20 @@ const startingPlayGroundState: PlaygroundState = {
   lightRays: [],
   mirrors: [
     {
-      start: [15, 0],
-      end: [15, 30],
+      start: [20, 0],
+      end: [20, 40],
       color: "#1f2937",
     },
   ],
   lines: [
-    { start: [12, 5], end: [12, 15], color: "#22c55e" },
-    { start: [3, 5], end: [3, 15], color: "#22c55e" },
+    { start: [17, 15], end: [17, 25], color: "#22c55e" },
+    { start: [8, 15], end: [8, 25], color: "#22c55e" },
   ],
 };
 
 export const Distance = () => {
   // State as signals
-  const [objectPosition, setObjectPosition] = createSignal<Point>([5, 9]);
+  const [objectPosition, setObjectPosition] = createSignal<Point>([12, 20]);
   const [crossedLines, setCrossedLines] = createSignal<Set<number>>(new Set());
 
   const readyForNext = createMemo(() => {
@@ -42,13 +42,13 @@ export const Distance = () => {
   const handleObjectDrag = (newPosition: Point, objectId: string) => {
     const oldPosition = objectPosition();
 
-    // Check if crossing line at x=12 (index 0)
-    if (checkLineCrossing(newPosition, oldPosition, 12)) {
+    // Check if crossing line at x=17 (index 0)
+    if (checkLineCrossing(newPosition, oldPosition, 17)) {
       setCrossedLines((prev) => new Set([...prev, 0]));
     }
 
-    // Check if crossing line at x=3 (index 1)
-    if (checkLineCrossing(newPosition, oldPosition, 3)) {
+    // Check if crossing line at x=8 (index 1)
+    if (checkLineCrossing(newPosition, oldPosition, 8)) {
       setCrossedLines((prev) => new Set([...prev, 1]));
     }
 
@@ -92,7 +92,7 @@ export const Distance = () => {
         },
         {
           start: [objectPosition()[0], objectPosition()[1] - 1.5],
-          end: [15, objectPosition()[1] - 1.5],
+          end: [20, objectPosition()[1] - 1.5],
           color: "#3b82f6",
           dotted: true,
         },
