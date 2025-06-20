@@ -124,15 +124,20 @@ export function drawLineWithReflection(
 
   const direction: [number, number] = [x, y];
   let currentDirection = vectorNormalize(direction);
+  let totalDistanceTraveled = 0;
 
   for (let reflection = 0; reflection < maxReflections; reflection++) {
     let closestIntersection: Point | null = null;
     let closestDistance = Infinity;
     let closestMirror: Line | null = null;
 
+    // Calculate remaining distance we can travel
+    const remainingDistance = maxDistance - totalDistanceTraveled;
+    if (remainingDistance <= 0) break;
+
     const rayEnd: Point = [
-      currentPoint[0] + currentDirection[0] * maxDistance,
-      currentPoint[1] + currentDirection[1] * maxDistance,
+      currentPoint[0] + currentDirection[0] * remainingDistance,
+      currentPoint[1] + currentDirection[1] * remainingDistance,
     ];
 
     for (const mirror of mirrors) {
@@ -157,8 +162,9 @@ export function drawLineWithReflection(
       }
     }
 
-    if (closestIntersection && closestMirror) {
+    if (closestIntersection && closestMirror && closestDistance <= remainingDistance) {
       drawLine(ctx, currentPoint, closestIntersection, color, width);
+      totalDistanceTraveled += closestDistance;
 
       const mirrorVector = vectorSubtract(
         closestMirror.start,
@@ -169,6 +175,7 @@ export function drawLineWithReflection(
       currentDirection = reflectVector(currentDirection, mirrorNormal);
       currentPoint = closestIntersection;
     } else {
+      // Draw final segment up to the remaining distance limit
       drawLine(ctx, currentPoint, rayEnd, color, width);
       break;
     }

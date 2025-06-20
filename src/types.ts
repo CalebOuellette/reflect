@@ -15,4 +15,5 @@ export type LightRay = {
   direction: number;
   distance: number;
   color: string;
+  maxLength?: number;
 };

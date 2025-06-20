@@ -72,29 +72,39 @@ export const Angles = () => {
 
     // Find the closest reflected object for demonstration
     const closestReflected = reflectedObjects[0];
-    
+
     let lines = [];
     let lightRays = [];
-    
+
     if (closestReflected) {
       // Calculate vector from observer to reflected target
-      const directionToReflected = vectorSubtract(closestReflected.point, observerObject.point);
+      const directionToReflected = vectorSubtract(
+        closestReflected.point,
+        observerObject.point,
+      );
       const angle = vectorAngle(directionToReflected);
-      
+
+      // Calculate distance between observer and reflected object
+      const distance = Math.sqrt(
+        directionToReflected[0] * directionToReflected[0] +
+          directionToReflected[1] * directionToReflected[1],
+      );
+
       // Draw line from observer to reflected target object
       lines.push({
         start: observerObject.point,
         end: closestReflected.point,
-        color: "green",
+        color: "blue",
         dotted: true,
       });
-      
-      // Draw lightRay from observer at the same angle
+
+      // Draw lightRay from observer at the same angle using calculated distance
       lightRays.push({
         start: observerObject.point,
         direction: angle,
         distance: 20,
         color: "blue",
+        maxLength: distance,
       });
     }
 

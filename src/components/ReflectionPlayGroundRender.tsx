@@ -52,8 +52,8 @@ export function ReflectionPlayGroundRender(props: {
         light.direction,
         props.playground.mirrors,
         10,
-        50,
-        "blue",
+        light.maxLength ?? 50,
+        light.color,
         1,
       );
     });
