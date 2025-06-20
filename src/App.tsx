@@ -1,8 +1,10 @@
 import { Distance } from "./scenes/01_Distance";
+import { Angles } from "./scenes/02_Angles";
 
 function App() {
   const scenes = [
     { name: "Distance", component: Distance },
+    { name: "Angles", component: Angles },
     // Add more scenes here as needed
   ];
   return (

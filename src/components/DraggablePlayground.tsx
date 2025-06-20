@@ -8,12 +8,13 @@ import {
 
 export function DraggablePlayground(props: {
   playground: PlaygroundState;
-  onObjectDrag?: (position: Point) => void;
+  onObjectDrag?: (position: Point, objectId: string) => void;
 }) {
   let wrapperRef: HTMLDivElement | undefined;
 
   // Drag state
   const [isDragging, setIsDragging] = createSignal(false);
+  const [draggedObjectId, setDraggedObjectId] = createSignal<string | null>(null);
 
   // Helper function to convert canvas coordinates to world coordinates
   const canvasToWorld = (canvasX: number, canvasY: number): Point => {
@@ -47,18 +48,20 @@ export function DraggablePlayground(props: {
     );
     if (nearObject) {
       setIsDragging(true);
+      setDraggedObjectId(nearObject.id);
     }
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging() && props.onObjectDrag) {
+    if (isDragging() && props.onObjectDrag && draggedObjectId()) {
       const worldPos = canvasToWorld(e.clientX, e.clientY);
-      props.onObjectDrag(worldPos);
+      props.onObjectDrag(worldPos, draggedObjectId()!);
     }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    setDraggedObjectId(null);
   };
 
   onMount(() => {

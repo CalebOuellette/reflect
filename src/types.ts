@@ -1,7 +1,8 @@
 export type Point = [number, number];
 export type Vector = [number, number];
-export type Line = { start: Point; end: Point; color: string };
+export type Line = { start: Point; end: Point; color: string; dotted?: boolean };
 export type SceneObjects = {
+  id: string;
   color: string | string[];
   point: Point;
   rotation: number;

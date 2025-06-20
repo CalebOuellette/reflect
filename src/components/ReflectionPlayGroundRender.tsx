@@ -59,7 +59,7 @@ export function ReflectionPlayGroundRender(props: {
     });
 
     props.playground.lines.forEach((line) => {
-      drawLine(ctx, line.start, line.end, line.color);
+      drawLine(ctx, line.start, line.end, line.color, 2, line.dotted);
     });
   };
 

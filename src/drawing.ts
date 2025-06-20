@@ -15,8 +15,14 @@ export function drawLine(
   to: Point,
   color = "red",
   width = 2,
+  dotted = false,
 ) {
   ctx.beginPath();
+  if (dotted) {
+    ctx.setLineDash([5, 5]);
+  } else {
+    ctx.setLineDash([]);
+  }
   ctx.moveTo(from[0] * SCALE, from[1] * SCALE);
   ctx.lineTo(to[0] * SCALE, to[1] * SCALE);
   ctx.strokeStyle = color;
