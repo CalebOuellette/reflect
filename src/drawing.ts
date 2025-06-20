@@ -1,10 +1,5 @@
 import type { Point, Vector, Line, SceneObjects } from "./types";
-import {
-  vectorAdd,
-  vectorScale,
-  vectorSubtract,
-  vectorNormalize,
-} from "./vectorUtils";
+import { vectorSubtract, vectorNormalize } from "./vectorUtils";
 import { lineIntersection, reflectVector } from "./geometry";
 
 export const SCALE = 20;
@@ -162,7 +157,11 @@ export function drawLineWithReflection(
       }
     }
 
-    if (closestIntersection && closestMirror && closestDistance <= remainingDistance) {
+    if (
+      closestIntersection &&
+      closestMirror &&
+      closestDistance <= remainingDistance
+    ) {
       drawLine(ctx, currentPoint, closestIntersection, color, width);
       totalDistanceTraveled += closestDistance;
 

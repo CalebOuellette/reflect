@@ -39,7 +39,7 @@ export const Distance = () => {
   };
 
   // Handle object position changes and check for line crossings
-  const handleObjectDrag = (newPosition: Point, objectId: string) => {
+  const handleObjectDrag = (newPosition: Point) => {
     const oldPosition = objectPosition();
 
     // Check if crossing line at x=17 (index 0)
